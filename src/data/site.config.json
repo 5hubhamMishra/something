@@ -1,0 +1,133 @@
+{
+  "father": {
+    "name": "Sunil Kumar Mishra",
+    "displayName": "Sunil Kumar Mishra",
+    "birthDate": "September 7, 1979",
+    "birthplace": "Janakpur, Nepal",
+    "profession": "",
+    "tagline": "The man behind our world.",
+    "traits": [
+      { "word": "Hardworking", "story": "He always finishes what he starts, and finishes it on time." },
+      { "word": "Kind", "story": "His kindness reaches beyond people — he loves nature and animals." },
+      { "word": "Curious", "story": "Passionate about the things he does, and always eager to learn something new." },
+      { "word": "Caring", "story": "He always cares about family, above everything else." },
+      { "word": "Protective", "story": "Always protective, making sure we never end up in trouble." },
+      { "word": "Supporting", "story": "He supports the positive decisions we make, and stands behind us." }
+    ],
+    "quotes": [
+      "You only have your father and mother as the best well-wisher in the world who will look after you without expecting anything in return."
+    ]
+  },
+
+  "timeline": [
+    { "year": "1979", "title": "Born in Janakpur", "description": "The third child in his family, and the second son.", "image": "/images/timeline-1979.jpg" },
+    { "year": "1998", "title": "First Job", "description": "Became team leader with UNDP / LGP / DDC.", "image": "/images/undp-work.jpg" },
+    { "year": "2001", "title": "Marriage", "description": "", "image": "/images/timeline-2001-marriage.jpg" },
+    { "year": "2002", "title": "First Child Born", "description": "He became a father for the first time.", "image": "/images/timeline-2002-first-child.jpg" },
+    { "year": "2007", "title": "Family Milestone", "description": "Built a home for the family in Janakpur.", "image": "/images/home-porch.jpg" },
+    { "year": "2014", "title": "Major Achievement", "description": "Became a District Governance Expert with UNDP / LGCDP.", "image": "/images/timeline-2014-achievement.jpg" },
+    { "year": "2026", "title": "The Family Today", "description": "Still the center of this family's story.", "image": "/images/timeline-2026-family.jpg" }
+  ],
+
+  "family": [
+    { "id": "grandfather", "name": "Bhola Mishra", "relation": "Father (in loving memory)", "message": "Wherever you are, may you watch over him with pride — the same strength and warmth you gave him lives on in every part of who he's become.", "image": "/images/grandfather.jpg", "x": -1.7, "y": 2.1, "z": 0.4 },
+    { "id": "mother", "name": "Jibchi Davi", "relation": "Mother (in loving memory)", "message": "Every value he holds and every kindness he shows carries a piece of you. Your blessings walk with him always.", "image": "/images/mother.jpg", "x": 1.7, "y": 2.1, "z": 0.4 },
+    { "id": "big-sister", "name": "Rakha Pandey", "relation": "Big Sister", "message": "The first of us all, still watching over everyone.", "image": "/images/rakha.jpg", "x": -5.2, "y": 1.0, "z": -0.6 },
+    { "id": "big-brother", "name": "Saroj Mishra", "relation": "Big Brother", "message": "Proud to call you my brother.", "image": "/images/big-brother.jpg", "x": -3.6, "y": 1.0, "z": -0.6 },
+    { "id": "little-brother", "name": "Anil Mishra", "relation": "Little Brother", "message": "Always looking up to you.", "image": "/images/little-brother.jpg", "x": 3.6, "y": 1.0, "z": -0.6 },
+    { "id": "wife", "name": "Kiran Mishra", "relation": "Wife", "message": "Have a healthy and happy life.", "image": "/images/wife-kiran.jpg", "x": -2.7, "y": -0.1, "z": -1.4 },
+    { "id": "son", "name": "Shubham Mishra", "relation": "Son", "message": "Love you, Dad.", "image": "/images/son-shubham.jpg", "x": 0.2, "y": -2.3, "z": 1.2 },
+    { "id": "nephew", "name": "Love Mishra", "relation": "Nephew", "message": "My favorite uncle.", "image": "/images/nephew.jpg", "x": -2.2, "y": -1.9, "z": 1.6 },
+    { "id": "rituraj", "name": "Rituraj Pandey", "relation": "Nephew", "message": "Proud to call you my uncle.", "image": "/images/rituraj.jpg", "x": 4.4, "y": -1.5, "z": 1.4 },
+    { "id": "nisha", "name": "Nisha Pandey", "relation": "Niece", "message": "Grateful to have you in our corner.", "image": "/images/nisha.jpg", "x": 6.0, "y": -2.0, "z": 2.0 },
+    { "id": "gujari", "name": "Gujari Pandey", "relation": "Niece", "message": "You've always felt like a second father.", "image": "/images/gujari.jpg", "x": 5.0, "y": -3.0, "z": 1.0 }
+  ],
+
+  "memories": [
+    { "id": "mem-1", "title": "Together, On A Foggy Morning", "date": "", "description": "[MEMORY_DESCRIPTION]", "image": "/images/family-trio.jpg" },
+    { "id": "mem-2", "title": "Playing Holi", "date": "", "description": "[MEMORY_DESCRIPTION]", "image": "/images/holi.jpg" },
+    { "id": "mem-3", "title": "At The Janaki Mandir", "date": "", "description": "[MEMORY_DESCRIPTION]", "image": "/images/janaki-mandir.jpg" },
+    { "id": "mem-4", "title": "A Night In Varanasi", "date": "", "description": "[MEMORY_DESCRIPTION]", "image": "/images/varanasi-trip.jpg" },
+    { "id": "mem-5", "title": "An Afternoon Away", "date": "", "description": "[MEMORY_DESCRIPTION]", "image": "/images/resort-park.jpg" },
+    { "id": "mem-6", "title": "An Evening In The Garden", "date": "", "description": "[MEMORY_DESCRIPTION]", "image": "/images/garden.jpg" }
+  ],
+
+  "achievements": [
+    {
+      "year": "1998",
+      "title": "Team Leader, UNDP Local Governance Programme",
+      "description": "At just 19, he stepped into his first job as a team leader within UNDP's local governance work in Nepal — part of the lineage of programmes, including the Participatory District Development Programme (PDDP), built to strengthen District Development Committees (DDCs) across the country. The work centered on participatory planning: helping district and village-level bodies plan and manage their own development instead of having it dictated from the center. For a young man barely out of his teens, it meant early responsibility — coordinating with local government officials, communities, and development partners to turn national policy into work that actually reached people's villages. It was the foundation of a career that would span more than two decades in public service."
+    },
+    {
+      "year": "2014",
+      "title": "District Governance Expert, UNDP / LGCDP",
+      "description": "Sixteen years into his career, he became a District Governance Expert with the Local Governance and Community Development Programme (LGCDP) — a national programme run by Nepal's Ministry of Federal Affairs and General Administration with support from a joint UN effort spanning UNDP, UNICEF, UNFPA, UNV, and UNCDF. LGCDP's mission was ambitious in scale: strengthening inclusive, responsive, and accountable local governance across all 75 districts of Nepal, 217 municipalities, and thousands of village development committees, with the aim of reducing poverty through community-led development. As a district-level expert, his role was to translate that national vision into practice on the ground — building the capacity of local governments to manage resources and deliver basic services fairly, and helping citizens engage more directly with the institutions meant to serve them. It was the kind of work that rarely makes headlines, but quietly shapes how millions of people experience their own government."
+    }
+  ],
+
+  "lessons": [
+    { "word": "Discipline", "quote": "[FATHER_QUOTE]", "story": "[PERSONAL_STORY]" },
+    { "word": "Patience", "quote": "[FATHER_QUOTE]", "story": "[PERSONAL_STORY]" },
+    { "word": "Responsibility", "quote": "[FATHER_QUOTE]", "story": "[PERSONAL_STORY]" },
+    { "word": "Courage", "quote": "[FATHER_QUOTE]", "story": "[PERSONAL_STORY]" },
+    { "word": "Family", "quote": "[FATHER_QUOTE]", "story": "[PERSONAL_STORY]" },
+    { "word": "Hard Work", "quote": "[FATHER_QUOTE]", "story": "[PERSONAL_STORY]" },
+    { "word": "Never Give Up", "quote": "[FATHER_QUOTE]", "story": "[PERSONAL_STORY]" }
+  ],
+
+  "futureDreams": [
+    { "title": "[FUTURE_PLACE_OR_GOAL]", "description": "[FUTURE_DESCRIPTION]" },
+    { "title": "[FUTURE_PLACE_OR_GOAL]", "description": "[FUTURE_DESCRIPTION]" },
+    { "title": "[FUTURE_PLACE_OR_GOAL]", "description": "[FUTURE_DESCRIPTION]" },
+    { "title": "[FUTURE_PLACE_OR_GOAL]", "description": "[FUTURE_DESCRIPTION]" }
+  ],
+
+  "hiddenMemories": [
+    { "id": "secret-1", "chapter": "beginning", "title": "[SECRET_TITLE]", "content": "[SECRET_CONTENT]", "image": "", "audio": "" },
+    { "id": "secret-2", "chapter": "family", "title": "[SECRET_TITLE]", "content": "[SECRET_CONTENT]", "image": "", "audio": "" },
+    { "id": "secret-3", "chapter": "memories", "title": "[SECRET_TITLE]", "content": "[SECRET_CONTENT]", "image": "", "audio": "" },
+    { "id": "secret-4", "chapter": "legacy", "title": "[SECRET_TITLE]", "content": "[SECRET_CONTENT]", "image": "", "audio": "" }
+  ],
+
+  "funSide": {
+    "favoritePhrases": ["[FAVORITE_PHRASE_1]", "[FAVORITE_PHRASE_2]"],
+    "dadJokes": ["[DAD_JOKE_1]", "[DAD_JOKE_2]"],
+    "funnyHabits": ["[FUNNY_HABIT_1]", "[FUNNY_HABIT_2]"],
+    "favoriteFood": "[FAVORITE_FOOD]",
+    "favoriteMovie": "[FAVORITE_MOVIE]",
+    "favoriteSong": "[FAVORITE_SONG]",
+    "insideJokes": ["[INSIDE_JOKE_1]", "[INSIDE_JOKE_2]"],
+    "console": [
+      { "category": "Classic Dad Quote", "content": "[DAD_QUOTE]" },
+      { "category": "Dad Advice", "content": "[DAD_ADVICE]" },
+      { "category": "Dad Joke", "content": "[DAD_JOKE]" },
+      { "category": "Dad Habit", "content": "[DAD_HABIT]" },
+      { "category": "Family Memory", "content": "[FAMILY_MEMORY]" }
+    ]
+  },
+
+  "audio": {
+    "ambientOpening": "",
+    "ambientJourney": "",
+    "ambientMemories": "",
+    "ambientFamily": "",
+    "ambientLegacy": "",
+    "ambientFinal": "",
+    "voiceRecordings": []
+  },
+
+  "finalMessage": {
+    "heading": "HAPPY BIRTHDAY, DAD.",
+    "body": [
+      "From a boy in Janakpur with nothing but curiosity and grit, to the steady hands that built this family a home — every year of your life has quietly taught us how to love without conditions.",
+      "We don't always say it, but we see it: the hardworking, protective, endlessly patient man who put us first, again and again, never asking for anything back.",
+      "So today, Dad, it's our turn — to look after you, to celebrate you, and to wish you a year as good as the one you've given us."
+    ],
+    "closing": [
+      "You gave us more than memories.",
+      "You gave us a place to call home.",
+      "Happy Birthday, Dad.",
+      "We love you."
+    ]
+  }
+}
