@@ -4,7 +4,7 @@
     "displayName": "Sunil Kumar Mishra",
     "birthDate": "September 7, 1979",
     "birthplace": "Janakpur, Nepal",
-    "profession": "",
+    "profession": "Civil Servant, UNDP (under the Government of Nepal), 2014–2019",
     "tagline": "The man behind our world.",
     "traits": [
       { "word": "Hardworking", "story": "He always finishes what he starts, and finishes it on time." },
@@ -22,7 +22,7 @@
   "timeline": [
     { "year": "1979", "title": "Born in Janakpur", "description": "The third child in his family, and the second son.", "image": "/images/timeline-1979.jpg" },
     { "year": "1998", "title": "First Job", "description": "Became team leader with UNDP / LGP / DDC.", "image": "/images/undp-work.jpg" },
-    { "year": "2001", "title": "Marriage", "description": "", "image": "/images/timeline-2001-marriage.jpg" },
+    { "year": "2001", "title": "Marriage", "description": "Married Kiran Thakur — who became Kiran Mishra — in Sursand, a town in Bihar, India.", "image": "/images/timeline-2001-marriage.jpg" },
     { "year": "2002", "title": "First Child Born", "description": "He became a father for the first time.", "image": "/images/timeline-2002-first-child.jpg" },
     { "year": "2007", "title": "Family Milestone", "description": "Built a home for the family in Janakpur.", "image": "/images/home-porch.jpg" },
     { "year": "2014", "title": "Major Achievement", "description": "Became a District Governance Expert with UNDP / LGCDP.", "image": "/images/timeline-2014-achievement.jpg" },
@@ -44,12 +44,12 @@
   ],
 
   "memories": [
-    { "id": "mem-1", "title": "Together, On A Foggy Morning", "date": "", "description": "[MEMORY_DESCRIPTION]", "image": "/images/family-trio.jpg" },
-    { "id": "mem-2", "title": "Playing Holi", "date": "", "description": "[MEMORY_DESCRIPTION]", "image": "/images/holi.jpg" },
-    { "id": "mem-3", "title": "At The Janaki Mandir", "date": "", "description": "[MEMORY_DESCRIPTION]", "image": "/images/janaki-mandir.jpg" },
-    { "id": "mem-4", "title": "A Night In Varanasi", "date": "", "description": "[MEMORY_DESCRIPTION]", "image": "/images/varanasi-trip.jpg" },
-    { "id": "mem-5", "title": "An Afternoon Away", "date": "", "description": "[MEMORY_DESCRIPTION]", "image": "/images/resort-park.jpg" },
-    { "id": "mem-6", "title": "An Evening In The Garden", "date": "", "description": "[MEMORY_DESCRIPTION]", "image": "/images/garden.jpg" }
+    { "id": "mem-1", "title": "Together, On A Foggy Morning", "date": "2025", "description": "The mist hadn't lifted yet, but none of us minded waiting for it to clear — Dad, Mom, and me standing close, breath visible in the cold morning air. There was no occasion, no camera setup, just an ordinary morning where being together was enough. Looking at it now, it feels less like a photo of a foggy morning and more like a photo of how simple our happiest moments with him have always been.", "image": "/images/family-trio.jpg" },
+    { "id": "mem-2", "title": "Playing Holi", "date": "2022", "description": "Colour in his hair, colour on his shirt, and that unmistakable grin that always gives away how much he loves this festival — Dad was never someone who watched Holi from the sidelines. He'd be right in the middle of it, Mom laughing beside him, throwing handfuls of gulal at anyone who came close and laughing louder than anyone else in the yard. This photo caught them both mid-celebration, completely unguarded, a reminder that beneath the responsible, hardworking man we know, there's always been a playful kid who never grew out of loving colour, chaos, and family.", "image": "/images/holi.jpg" },
+    { "id": "mem-3", "title": "At The Janaki Mandir", "date": "2024", "description": "Janakpur is where his story began, and the Janaki Mandir has always felt like its heart — a place he returns to not just as a visitor, but as someone who belongs to this soil. Standing before its towering white spires, there's a quiet stillness to him that's different from anywhere else, a kind of homecoming that's hard to put into words. This photo isn't just a temple visit; it's a reminder of the roots he carries with him everywhere, and the faith that has steadied him through every chapter since.", "image": "/images/janaki-mandir.jpg" },
+    { "id": "mem-4", "title": "A Night In Varanasi", "date": "2025", "description": "The lamps were floating down the Ganga, the chants of the evening aarti rising over the ghats, and somewhere in that glowing crowd stood Dad — taking it all in with a quiet wonder you don't often see on a man who usually has everything figured out. Varanasi has a way of making everyone feel small in the best possible way, and that night we watched him feel it too. It's one of those trips we don't talk about often, but that we all still carry with us — a rare, unguarded moment of peace, far from home, together.", "image": "/images/varanasi-trip.jpg" },
+    { "id": "mem-5", "title": "An Afternoon Away", "date": "2018", "description": "In the middle of his years working with the UNDP — years full of districts to visit, reports to file, communities depending on him — this was one of the rare afternoons where none of that followed him. No errands, no schedule, no one needing anything from him, just a stretch of time where Dad got to sit back, breathe, and simply be present. There's a different kind of ease in him here: shoulders relaxed, laughter coming easier, time moving slower than usual. Afternoons like this one are easy to lose in the rush of ordinary life, but they're exactly the moments worth holding onto — the ones where he wasn't taking care of everyone else, just enjoying being taken care of, for once.", "image": "/images/resort-park.jpg" },
+    { "id": "mem-6", "title": "An Evening In The Garden", "date": "2015", "description": "As the light softened and the day cooled down, Dad would still be out there among the plants he's spent years growing — checking on them the way he checks on all of us, patiently and quietly, without ever needing to be asked. The garden has always felt like an extension of him: something built slowly, tended with care, and never rushed. This photo is just one ordinary evening among many, but it says everything about the kind of man he is — someone who finds peace in nurturing things, and who has spent a lifetime doing exactly that for his family.", "image": "/images/garden.jpg" }
   ],
 
   "achievements": [
@@ -66,27 +66,27 @@
   ],
 
   "lessons": [
-    { "word": "Discipline", "quote": "[FATHER_QUOTE]", "story": "[PERSONAL_STORY]" },
-    { "word": "Patience", "quote": "[FATHER_QUOTE]", "story": "[PERSONAL_STORY]" },
-    { "word": "Responsibility", "quote": "[FATHER_QUOTE]", "story": "[PERSONAL_STORY]" },
-    { "word": "Courage", "quote": "[FATHER_QUOTE]", "story": "[PERSONAL_STORY]" },
-    { "word": "Family", "quote": "[FATHER_QUOTE]", "story": "[PERSONAL_STORY]" },
-    { "word": "Hard Work", "quote": "[FATHER_QUOTE]", "story": "[PERSONAL_STORY]" },
-    { "word": "Never Give Up", "quote": "[FATHER_QUOTE]", "story": "[PERSONAL_STORY]" }
+    { "word": "Discipline", "quote": "Before you commit to anything, ask yourself if it's right. Once you know it's right, give it everything — don't do it halfway.", "story": "Growing up, discipline in our house never looked like strict rules or raised voices. It looked like a very simple question Dad would ask before starting anything, big or small: is this the right thing to do? If the answer was yes, there was no more room for hesitation — he expected full commitment, not half-hearted effort, and he lived that way himself, whether it was a work deadline or something as small as fixing something around the house. He taught us that discipline isn't about restriction; it's about clarity — knowing what's right, and then having the will to see it through completely." },
+    { "word": "Patience", "quote": "Without patience, you'll never learn to hold on and wait — and without that, you'll achieve nothing at all.", "story": "Dad has never been the kind of man to rush a decision or force an outcome before its time. He always believed that patience wasn't just about waiting quietly — it was about committing to something and trusting the process, even when results didn't show up right away. Any time we grew frustrated or wanted to give up on something too soon, he'd remind us that impatience was the fastest way to lose everything we'd already worked for. It's a lesson that's taken years to fully sink in, but every time it does, we hear his voice behind it." },
+    { "word": "Responsibility", "quote": "Be a responsible person — in everything you do, and to everyone around you.", "story": "It sounds simple when he says it, but responsibility was never just a word for Dad — it was how he lived every single day. Whether it was providing for the family, showing up to work others depended on, or simply following through on a promise he made to one of us, he never let anyone down when it mattered. He didn't lecture us about it often; he just modeled it, over and over, until being responsible felt less like an instruction and more like something we absorbed just from watching him." },
+    { "word": "Courage", "quote": "Show courage when the situation truly demands it — not needlessly.", "story": "Dad was never one to chase risk for the sake of it. His idea of courage wasn't loud or reckless — it was quiet and deliberate, saved for the moments that actually called for it. He taught us that real bravery isn't about proving something to others; it's about knowing exactly when to stand firm, and having the strength to do it, without wasting that strength on things that don't matter. It's a kind of courage that doesn't announce itself, but it's carried our family through more than a few hard moments." },
+    { "word": "Family", "quote": "Always stay close to your family, and listen to them — without family, we are alone.", "story": "No matter how busy life got, family was never something Dad treated as optional or secondary. He always made sure we stayed close — not just physically, but in the way we listened to and looked out for one another. He'd remind us, gently but firmly, that no amount of success means much if you end up isolated from the people who matter most. It's why, even now, home has always felt less like a place and more like something he built intentionally, one act of listening and staying close at a time." },
+    { "word": "Hard Work", "quote": "Do the hard work without expecting anything in return — the reward will always follow on its own.", "story": "Dad has spent decades working hard without ever making a show of it or expecting recognition for it. He believed — and still believes — that if you put in honest effort without keeping score of what you're owed for it, life eventually gives back in its own time and its own way. We watched him live by this for years: long hours, quiet sacrifices, never once demanding credit. It taught us that real hard work isn't transactional — it's just who you choose to be, regardless of what comes back." },
+    { "word": "Never Give Up", "quote": "Never give up — if you try enough times, you will always succeed in the end.", "story": "If there's one lesson Dad has repeated more than any other, it's this one. To him, giving up was never really an option — setbacks were just part of the process, not a reason to stop. He always said that persistence eventually wins, that enough attempts, enough patience, and enough belief will get you where you're trying to go. It's a simple idea, but watching him live it — through every hard year and every setback — made it something we didn't just hear from him. We saw it." }
   ],
 
   "futureDreams": [
-    { "title": "[FUTURE_PLACE_OR_GOAL]", "description": "[FUTURE_DESCRIPTION]" },
-    { "title": "[FUTURE_PLACE_OR_GOAL]", "description": "[FUTURE_DESCRIPTION]" },
-    { "title": "[FUTURE_PLACE_OR_GOAL]", "description": "[FUTURE_DESCRIPTION]" },
-    { "title": "[FUTURE_PLACE_OR_GOAL]", "description": "[FUTURE_DESCRIPTION]" }
+    { "title": "Pursuing An LLB, After Semi-Retirement", "description": "Even after decades of public service, he wasn't ready to stop learning. After semi-retirement, Dad got admitted into an LLB course — proof that for him, growth doesn't have an age limit. It's one of the things we admire most: that even now, he's still choosing to build something new." },
+    { "title": "A Peaceful Life In Janakpur", "description": "After a career spent moving between districts and responsibilities, his dream is simple: to settle back into Janakpur, the town where his story began, and live out his days in quiet contentment among the people and places he's always called home." },
+    { "title": "Chasing Peaceful, Beautiful Places", "description": "Dad has always been drawn to places that are as peaceful as they are beautiful — the kind of destinations where you can simply breathe and take everything in. Travelling to more of these places, at his own pace and without deadlines to rush back to, is high on his list for the years ahead." },
+    { "title": "Watching Me Succeed", "description": "More than any personal ambition, what Dad wants most is to see his son in a good position in life — settled, successful, and standing on his own feet. It's the kind of dream a father carries quietly for years, and one we hope to make come true for him." }
   ],
 
   "hiddenMemories": [
-    { "id": "secret-1", "chapter": "beginning", "title": "[SECRET_TITLE]", "content": "[SECRET_CONTENT]", "image": "", "audio": "" },
-    { "id": "secret-2", "chapter": "family", "title": "[SECRET_TITLE]", "content": "[SECRET_CONTENT]", "image": "", "audio": "" },
-    { "id": "secret-3", "chapter": "memories", "title": "[SECRET_TITLE]", "content": "[SECRET_CONTENT]", "image": "", "audio": "" },
-    { "id": "secret-4", "chapter": "legacy", "title": "[SECRET_TITLE]", "content": "[SECRET_CONTENT]", "image": "", "audio": "" }
+    { "id": "secret-1", "chapter": "beginning", "title": "Something We Never Told You", "content": "This entire site was built in secret — hours pieced together late at night, tabs closed the moment you walked into the room — just so this one moment could surprise you the way you've been quietly surprising us with love for years, without ever asking for anything back.", "image": "", "audio": "" },
+    { "id": "secret-2", "chapter": "family", "title": "What We Never Say Out Loud", "content": "We don't say this enough, so let this hidden page say it for us: every one of us talks about you more than you know — not the big things, just the small ones, like how you still check if we've eaten, or worry about us even now that we're grown. This family runs on your quiet love, even when we're bad at putting it into words.", "image": "", "audio": "" },
+    { "id": "secret-3", "chapter": "memories", "title": "One We Kept For Ourselves", "content": "Not every memory made it onto this page — some we kept just for us, tucked away the way you've always tucked away the things that matter most instead of showing them off. Some of the best ones we share need no photo at all to remember.", "image": "", "audio": "" },
+    { "id": "secret-4", "chapter": "legacy", "title": "The Promise", "content": "Everything you taught us — the discipline, the patience, the quiet hard work — didn't stop with you. We're carrying it forward, and one day we hope to pass it on the exact same way you did: without ever asking for anything in return. This is us, promising you that your legacy doesn't end here. It just keeps going.", "image": "", "audio": "" }
   ],
 
   "funSide": {
