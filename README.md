@@ -49,7 +49,35 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000).
 
-## 4. Architecture, in brief
+## 4. Set up the login
+
+The whole site sits behind a single username/password gate (`src/proxy.ts`) — there's only ever one account. Forgotten passwords are reset with a one-time code emailed to you (via [Resend](https://resend.com), a native Vercel Marketplace integration) rather than stored anywhere recoverable.
+
+**Nothing here is ever committed.** `.env.local` is gitignored; only `.env.example` (empty key names, no values) is tracked. The password itself is never stored in an env var — only its salted hash, kept in Redis so it can actually change at runtime without a redeploy.
+
+1. **Install Resend and Upstash for Redis from the Vercel dashboard** (Project → Integrations → Browse Marketplace), making sure you're in the correct team scope and connect each one to this project. The `vercel integration add` CLI path *can* work too, but in practice the terms-acceptance handoff is flaky — the dashboard is more reliable.
+
+2. **Get the actual key/credential values** — Vercel provisions both as write-only "Sensitive" variables, so `vercel env pull` can't retrieve them (a pull will show `[SENSITIVE]` instead of the real value). Get the real values from each provider's own dashboard instead:
+   - Resend: `resend.com/api-keys` → Create API Key → copy it immediately, it's shown once.
+   - Redis: Vercel Project → Storage tab → click the database → copy `KV_REST_API_URL` and `KV_REST_API_TOKEN` from there.
+
+3. **Fill in `.env.local`** (see `.env.example` for the full list): `SITE_USERNAME`, `SESSION_SECRET` (one was already generated for you), `OWNER_EMAIL`, `RESEND_API_KEY`, `KV_REST_API_URL`, `KV_REST_API_TOKEN`.
+
+4. **Push the non-auto-provisioned ones to Vercel too** (`SITE_USERNAME`, `SESSION_SECRET`, `OWNER_EMAIL`, `RESEND_API_KEY` if the dashboard install didn't already set it):
+   ```bash
+   vercel env add SITE_USERNAME production,preview,development --value "..." --no-sensitive
+   ```
+   (repeat per variable — split `production,preview` from `development` with `--no-sensitive` if you want it marked Sensitive, since Development doesn't support that type).
+
+5. **Set the initial password** (bypasses the OTP flow, since there's nothing to reset yet):
+   ```bash
+   node scripts/set-password.mjs "your new password"
+   ```
+   Run this again any time you want to change the password directly. It writes straight to Redis using the `KV_REST_API_URL` / `KV_REST_API_TOKEN` in `.env.local` — make sure those are the *production* database's credentials if you want it to take effect on the live site.
+
+Once that's done, visiting the site prompts for the username/password, and "Forgot password?" on `/login` emails a 6-digit code good for 10 minutes.
+
+## 5. Architecture, in brief
 
 - **One persistent `<Canvas>`** (`src/components/canvas/Experience3D.tsx`) renders the entire journey as a single 3D "corridor" along the Z axis — each chapter's content lives in its own world-space slot (`src/lib/chapters.ts`), and the camera flies through them as you scroll.
 - **`ScrollControls`** (from `@react-three/drei`) drives both the 3D camera and the HTML text overlays from one synchronized scroll value — no separate scroll library needed.
@@ -57,7 +85,7 @@ Open [http://localhost:3000](http://localhost:3000).
 - **Chapters** live in `src/components/chapters/` — each exports a `*Scene` (3D) and `*Dom` (HTML) component pair.
 - Reduced-motion and mobile are detected in `src/hooks/useMediaFlags.ts` and used to scale back particle counts and disable post-processing bloom.
 
-## 5. Deploy
+## 6. Deploy
 
 This is a standard Next.js app — deploy it to Vercel:
 
@@ -69,7 +97,7 @@ vercel --prod     # production deployment
 
 or connect the repository at [vercel.com/new](https://vercel.com/new) for automatic deployments on every push.
 
-## 6. Performance notes
+## 7. Performance notes
 
 - No external assets are required for the site to look intentional — every visual has a placeholder fallback.
 - Particle counts, DPR, and post-processing automatically scale down on mobile and when `prefers-reduced-motion` is set.

@@ -5,6 +5,7 @@ import dynamic from 'next/dynamic';
 import OpeningOverlay from '@/components/ui/OpeningOverlay';
 import ChapterNav from '@/components/ui/ChapterNav';
 import AudioPlayer from '@/components/ui/AudioPlayer';
+import SignOutButton from '@/components/ui/SignOutButton';
 import { SecretHotspot, SecretModal } from '@/components/ui/SecretLayer';
 import { hydrateDiscovered } from '@/lib/store';
 
@@ -23,6 +24,7 @@ export default function Experience() {
       <OpeningOverlay />
       <ChapterNav />
       <AudioPlayer />
+      <SignOutButton />
       <SecretHotspot />
       <SecretModal />
     </div>
