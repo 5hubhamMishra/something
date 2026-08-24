@@ -1,9 +1,10 @@
 'use client';
 
-import { Suspense, useEffect, useRef } from 'react';
+import { Suspense, useEffect, useRef, useState } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import { useTexture, RoundedBox, Text } from '@react-three/drei';
 import type { Group } from 'three';
+import { useUniverseStore } from '@/lib/store';
 
 interface FloatingPhotoProps {
   image?: string;
@@ -70,6 +71,8 @@ export default function FloatingPhoto({
 }: FloatingPhotoProps) {
   const group = useRef<Group>(null);
   const seed = position[0] + position[2];
+  const [hovered, setHovered] = useState(false);
+  const openLightbox = useUniverseStore((s) => s.openLightbox);
 
   useFrame((state) => {
     if (!group.current) return;
@@ -78,7 +81,28 @@ export default function FloatingPhoto({
   });
 
   return (
-    <group ref={group} position={position} rotation={rotation}>
+    <group
+      ref={group}
+      position={position}
+      rotation={rotation}
+      onPointerOver={(e) => {
+        if (!image) return;
+        e.stopPropagation();
+        setHovered(true);
+        document.body.style.cursor = 'pointer';
+      }}
+      onPointerOut={() => {
+        if (!image) return;
+        setHovered(false);
+        document.body.style.cursor = 'auto';
+      }}
+      onClick={(e) => {
+        if (!image) return;
+        e.stopPropagation();
+        openLightbox({ image, label, sublabel });
+      }}
+      scale={hovered ? 1.03 : 1}
+    >
       <RoundedBox args={[width, height, 0.04]} radius={0.02} smoothness={4}>
         <meshStandardMaterial color="#f4f1ea" roughness={0.6} metalness={0.1} />
       </RoundedBox>

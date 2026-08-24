@@ -1,10 +1,12 @@
 'use client';
 
+import Image from 'next/image';
 import FloatingPhoto from '@/components/canvas/FloatingPhoto';
 import ParticleField from '@/components/canvas/ParticleField';
 import Reveal from '@/components/ui/Reveal';
 import { hasContent, siteConfig } from '@/lib/config';
 import { chapterById } from '@/lib/chapters';
+import { useUniverseStore } from '@/lib/store';
 
 const chapter = chapterById('memories');
 
@@ -43,6 +45,7 @@ export function MemoriesScene() {
 
 export function MemoriesDom() {
   const heightVh = (chapter.end - chapter.start) * 100;
+  const openLightbox = useUniverseStore((s) => s.openLightbox);
   return (
     <section
       style={{ minHeight: `${heightVh}vh` }}
@@ -68,6 +71,28 @@ export function MemoriesDom() {
         {siteConfig.memories.map((memory, i) => (
           <Reveal key={memory.id} delay={0.25 + i * 0.05}>
             <div className="rounded-lg border border-bronze/25 bg-charcoal/50 p-4 h-full">
+              {memory.image ? (
+                <button
+                  onClick={() =>
+                    openLightbox({
+                      image: memory.image!,
+                      label: memory.title,
+                      sublabel: memory.date ?? undefined,
+                    })
+                  }
+                  aria-label={`View photo: ${memory.title}`}
+                  className="relative mb-3 block h-36 w-full overflow-hidden rounded-md border border-bronze/20 cursor-pointer"
+                >
+                  <Image
+                    src={memory.image}
+                    alt={memory.title}
+                    fill
+                    sizes="(min-width: 1024px) 320px, (min-width: 640px) 45vw, 90vw"
+                    quality={90}
+                    className="object-cover"
+                  />
+                </button>
+              ) : null}
               <span className="text-[10px] tracking-[0.3em] text-gold/80 uppercase">
                 {memory.date ?? ''}
               </span>

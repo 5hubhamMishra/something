@@ -1,5 +1,11 @@
 import { create } from 'zustand';
 
+export interface LightboxPhoto {
+  image: string;
+  label: string;
+  sublabel?: string;
+}
+
 interface UniverseState {
   hasEntered: boolean;
   introComplete: boolean;
@@ -20,6 +26,9 @@ interface UniverseState {
   toggleAudio: () => void;
   discoverSecret: (id: string) => void;
   openSecret: (id: string | null) => void;
+  lightboxPhoto: LightboxPhoto | null;
+  openLightbox: (photo: LightboxPhoto) => void;
+  closeLightbox: () => void;
 }
 
 export const useUniverseStore = create<UniverseState>((set) => ({
@@ -53,6 +62,9 @@ export const useUniverseStore = create<UniverseState>((set) => ({
       return { discovered: next };
     }),
   openSecret: (id) => set({ activeSecret: id }),
+  lightboxPhoto: null,
+  openLightbox: (photo) => set({ lightboxPhoto: photo }),
+  closeLightbox: () => set({ lightboxPhoto: null }),
 }));
 
 export function hydrateDiscovered() {
