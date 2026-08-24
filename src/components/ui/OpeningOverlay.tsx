@@ -6,13 +6,22 @@ import { introState } from '@/lib/introTween';
 import { useUniverseStore } from '@/lib/store';
 import { siteConfig } from '@/lib/config';
 
+const INTRO_SEEN_KEY = 'universe-intro-done';
+
 export default function OpeningOverlay() {
   const hasEntered = useUniverseStore((s) => s.hasEntered);
   const introComplete = useUniverseStore((s) => s.introComplete);
   const enter = useUniverseStore((s) => s.enter);
   const completeIntro = useUniverseStore((s) => s.completeIntro);
 
-  const [visible, setVisible] = useState(true);
+  const [visible, setVisible] = useState(() => {
+    try {
+      return sessionStorage.getItem(INTRO_SEEN_KEY) !== '1';
+    } catch {
+      return true;
+    }
+  });
+  const [showSkip, setShowSkip] = useState(false);
 
   const overlayRef = useRef<HTMLDivElement>(null);
   const line1Ref = useRef<HTMLParagraphElement>(null);
@@ -20,21 +29,49 @@ export default function OpeningOverlay() {
   const nameRef = useRef<HTMLHeadingElement>(null);
   const taglineRef = useRef<HTMLParagraphElement>(null);
   const startedRef = useRef(false);
+  const timelineRef = useRef<gsap.core.Timeline | null>(null);
+
+  function finishIntro() {
+    try {
+      sessionStorage.setItem(INTRO_SEEN_KEY, '1');
+    } catch {
+      /* storage unavailable */
+    }
+    completeIntro();
+    gsap.to(overlayRef.current, {
+      opacity: 0,
+      duration: 1.2,
+      onComplete: () => setVisible(false),
+    });
+  }
+
+  function skipIntro() {
+    timelineRef.current?.kill();
+    gsap.set(introState, { glow: 1, field: 1, morph: 1, cameraPush: 1 });
+    finishIntro();
+  }
+
+  // `visible` is already false on first render if this session has seen the
+  // intro before (lazy useState above reads sessionStorage synchronously,
+  // before paint) — this effect just syncs the store to match, it never
+  // sets React state itself.
+  useEffect(() => {
+    if (visible) return;
+    startedRef.current = true;
+    gsap.set(introState, { glow: 1, field: 1, morph: 1, cameraPush: 1 });
+    enter();
+    completeIntro();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (!hasEntered || startedRef.current) return;
     startedRef.current = true;
 
-    const tl = gsap.timeline({
-      onComplete: () => {
-        completeIntro();
-        gsap.to(overlayRef.current, {
-          opacity: 0,
-          duration: 1.2,
-          onComplete: () => setVisible(false),
-        });
-      },
-    });
+    const skipTimer = setTimeout(() => setShowSkip(true), 2000);
+
+    const tl = gsap.timeline({ onComplete: finishIntro });
+    timelineRef.current = tl;
 
     tl.to(introState, { glow: 1, duration: 1.6, ease: 'power1.out' })
       .fromTo(line1Ref.current, { opacity: 0 }, { opacity: 1, duration: 1.1 }, '<')
@@ -57,9 +94,11 @@ export default function OpeningOverlay() {
       .to(introState, { cameraPush: 1, duration: 2.6, ease: 'power2.in' }, '<');
 
     return () => {
+      clearTimeout(skipTimer);
       tl.kill();
     };
-  }, [hasEntered, completeIntro]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hasEntered]);
 
   if (!visible) return null;
 
@@ -86,6 +125,16 @@ export default function OpeningOverlay() {
       ) : (
         !introComplete && (
           <div className="relative w-full h-40 md:h-48 flex items-center justify-center px-6">
+            {showSkip ? (
+              <button
+                type="button"
+                onClick={skipIntro}
+                className="fixed bottom-6 right-6 z-50 text-[11px] tracking-[0.25em] uppercase text-silver/50 transition-colors hover:text-gold cursor-pointer"
+                style={{ minHeight: 44, padding: '10px 14px' }}
+              >
+                Skip
+              </button>
+            ) : null}
             <p
               ref={line1Ref}
               className="absolute inset-x-0 text-center whitespace-normal md:whitespace-nowrap font-display italic text-xl md:text-3xl text-warm-white/90 opacity-0"
