@@ -37,6 +37,7 @@ function LoginForm() {
   const [error, setError] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   function resetMessages() {
     setError(null);
@@ -113,13 +114,12 @@ function LoginForm() {
                 />
               </Field>
               <Field label="Password">
-                <input
-                  type="password"
+                <PasswordInput
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className={inputClass}
+                  onChange={setPassword}
                   autoComplete="current-password"
-                  required
+                  visible={showPassword}
+                  onToggleVisible={() => setShowPassword((v) => !v)}
                 />
               </Field>
 
@@ -182,14 +182,13 @@ function LoginForm() {
                 />
               </Field>
               <Field label="New password">
-                <input
-                  type="password"
+                <PasswordInput
                   value={newPassword}
-                  onChange={(e) => setNewPassword(e.target.value)}
-                  className={inputClass}
+                  onChange={setNewPassword}
                   autoComplete="new-password"
                   minLength={8}
-                  required
+                  visible={showPassword}
+                  onToggleVisible={() => setShowPassword((v) => !v)}
                 />
               </Field>
 
@@ -229,6 +228,46 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
       <span className="mb-1.5 block text-[11px] tracking-[0.2em] uppercase text-silver/60">{label}</span>
       {children}
     </label>
+  );
+}
+
+function PasswordInput({
+  value,
+  onChange,
+  autoComplete,
+  minLength,
+  visible,
+  onToggleVisible,
+}: {
+  value: string;
+  onChange: (v: string) => void;
+  autoComplete: string;
+  minLength?: number;
+  visible: boolean;
+  onToggleVisible: () => void;
+}) {
+  return (
+    <div className="relative">
+      <input
+        type={visible ? 'text' : 'password'}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        className={`${inputClass} pr-16`}
+        autoComplete={autoComplete}
+        minLength={minLength}
+        required
+      />
+      <button
+        type="button"
+        onClick={onToggleVisible}
+        aria-label={visible ? 'Hide password' : 'Show password'}
+        aria-pressed={visible}
+        className="absolute right-2 top-1/2 -translate-y-1/2 px-2 py-1 text-[10px] tracking-[0.15em] uppercase text-silver/60 transition-colors hover:text-gold cursor-pointer"
+        style={{ minHeight: 32 }}
+      >
+        {visible ? 'Hide' : 'Show'}
+      </button>
+    </div>
   );
 }
 
