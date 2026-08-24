@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "check-content": "node scripts/check-content-preservation.mjs"
+    "check-content": "node scripts/check-content-preservation.mjs",
+    "generate-webgl-images": "node scripts/generate-webgl-images.mjs"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.8",
@@ -34,6 +35,7 @@
     "@types/three": "^0.185.4",
     "eslint": "^9",
     "eslint-config-next": "16.3.0",
+    "sharp": "0.35.3",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

@@ -32,6 +32,7 @@ All 12 chapters, every canvas primitive, every UI component, all `src/lib/` file
 - **WebGL photo resilience**: added a local error boundary around floating photos and set WebGL photo textures to sRGB color space.
 - **Copy fix**: corrected the Family chapter's misleading "click a face in the family tree" text.
 - **Tooling**: added `npm run check-content`, a script that diffs `site.config.json` against the Phase-0 backup and flags any removed key, shrunk array, or string that went from real content to empty/placeholder.
+- **Image tooling**: added `npm run generate-webgl-images`, which regenerates the WebGL photo variants and the `webgl-image.ts` path map from the current `public/images/` folder. `sharp` is declared as a direct dev dependency for that script instead of relying on Next's transitive install.
 
 ## Content Preservation
 
@@ -65,12 +66,11 @@ Fixed: pre-generated `sm` (max 900px long edge) / `lg` (max 1400px) variants for
 
 Independently re-verified: all 50 generated files are within their size cap and none are upscaled past their source (confirmed by direct pixel inspection, not just trusting the report) — `gujari.jpg`'s variants stay 195×616, so the low-resolution limitation is preserved rather than papered over. `npm run build`, `npm run lint`, and `npm run check-content` all pass with these changes included, plus the login redirect hardening, floating-photo fallback, sRGB texture setup, and OTP cleanup.
 
-One gap worth flagging: there's no committed script to regenerate these variants — if a new photo is added to `public/images/` later, it needs the same treatment repeated by hand (and added to the list in `webgl-image.ts`) or it silently falls back to full-size loading for that one photo.
+Regeneration is now covered by `npm run generate-webgl-images`; if a new photo is added to `public/images/`, run that script to create its WebGL variants and refresh the helper map.
 
 ## Remaining Issues
 
 - **Needs a real browser pass.** Chapter navigation, the lightbox, intro skip, and particle density were verified by code review and build/lint/type-check only — not by seeing them render. One route-level authenticated check was done safely (a locally-signed session cookie, using `SESSION_SECRET` already in `.env.local` — no Redis access, no password involved) confirming `/` returns 200 and the new WebGL image variants are served correctly, but no visual/screenshot verification happened, since no browser-automation tool was available in this session. Recommend a manual pass on a phone and a laptop against `upgrade/cinematic-birthday-v2` before merging.
 - `gujari.jpg` (195×616) could use a higher-resolution original if one exists among the raw exports in `family/`.
 - No texture disposal was added for `useTexture` calls; drei's cache mitigates this, but it wasn't profiled.
-- No script to regenerate the WebGL image variants for a photo added after this pass (see above).
 - This branch (`upgrade/cinematic-birthday-v2`) has not been merged to `main` or deployed — that's a decision for you, not made automatically.
