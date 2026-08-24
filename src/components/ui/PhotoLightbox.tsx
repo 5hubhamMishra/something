@@ -60,6 +60,7 @@ export default function PhotoLightbox() {
               sizes="92vw"
               quality={90}
               className="object-contain"
+              unoptimized
             />
           </motion.div>
 

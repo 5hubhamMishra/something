@@ -10,6 +10,20 @@
   --color-bronze: #8a6a3e;
   --color-silver: #a9adb8;
 
+  /* --font-playfair / --font-manrope are NOT declared here on purpose.
+     next/font/google (see layout.tsx) sets them via a className on <html>,
+     self-hosting the font at build time — no runtime dependency on Google's
+     servers, so there's no "Google Fonts is unreachable" failure mode to
+     guard against here. A static fallback value in this block would not
+     act as a fallback: it's a second flat declaration of the same custom
+     property on the same element (:root === <html>), so the one later in
+     the cascade wins outright rather than only applying if the other is
+     missing — confirmed by testing that it silently overrides the real
+     font with Georgia/Trebuchet, not just when the font fails to load.
+     The actual fallback already lives where each font is *used*
+     (`font-family: var(--font-display), Georgia, serif` below), which is
+     the correct place for a CSS fallback to live. */
+
   --background: var(--color-void);
   --foreground: var(--color-warm-white);
 }

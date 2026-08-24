@@ -14,13 +14,8 @@ export default function OpeningOverlay() {
   const enter = useUniverseStore((s) => s.enter);
   const completeIntro = useUniverseStore((s) => s.completeIntro);
 
-  const [visible, setVisible] = useState(() => {
-    try {
-      return sessionStorage.getItem(INTRO_SEEN_KEY) !== '1';
-    } catch {
-      return true;
-    }
-  });
+  const [ready, setReady] = useState(false);
+  const [visible, setVisible] = useState(true);
   const [showSkip, setShowSkip] = useState(false);
 
   const overlayRef = useRef<HTMLDivElement>(null);
@@ -51,16 +46,31 @@ export default function OpeningOverlay() {
     finishIntro();
   }
 
-  // `visible` is already false on first render if this session has seen the
-  // intro before (lazy useState above reads sessionStorage synchronously,
-  // before paint) — this effect just syncs the store to match, it never
-  // sets React state itself.
   useEffect(() => {
-    if (visible) return;
-    startedRef.current = true;
-    gsap.set(introState, { glow: 1, field: 1, morph: 1, cameraPush: 1 });
-    enter();
-    completeIntro();
+    let cancelled = false;
+    let introDone = false;
+    try {
+      introDone = sessionStorage.getItem(INTRO_SEEN_KEY) === '1';
+    } catch {
+      introDone = false;
+    }
+
+    if (introDone) {
+      startedRef.current = true;
+      gsap.set(introState, { glow: 1, field: 1, morph: 1, cameraPush: 1 });
+      enter();
+      completeIntro();
+    }
+
+    queueMicrotask(() => {
+      if (cancelled) return;
+      if (introDone) setVisible(false);
+      setReady(true);
+    });
+
+    return () => {
+      cancelled = true;
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -100,7 +110,7 @@ export default function OpeningOverlay() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hasEntered]);
 
-  if (!visible) return null;
+  if (!ready || !visible) return null;
 
   return (
     <div

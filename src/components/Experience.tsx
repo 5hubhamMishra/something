@@ -22,7 +22,7 @@ export default function Experience() {
   }, []);
 
   return (
-    <div className="relative w-screen h-screen overflow-hidden bg-void">
+    <div className="relative h-screen w-full max-w-full overflow-hidden bg-void">
       <CanvasErrorBoundary>
         <Experience3D />
       </CanvasErrorBoundary>

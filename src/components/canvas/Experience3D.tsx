@@ -73,7 +73,7 @@ export default function Experience3D() {
             <FinaleScene />
 
             <Scroll html style={{ width: '100%' }}>
-              <div className="w-screen">
+              <div className="w-full max-w-full">
                 <BeginningDom />
                 <JourneyDom />
                 <ManDom />

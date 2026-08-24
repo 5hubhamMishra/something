@@ -90,6 +90,7 @@ export function MemoriesDom() {
                     sizes="(min-width: 1024px) 320px, (min-width: 640px) 45vw, 90vw"
                     quality={90}
                     className="object-cover"
+                    unoptimized
                   />
                 </button>
               ) : null}

@@ -46,7 +46,15 @@ function TreeCard({
           // matched to it — the `sizes` hint only reacts to viewport breakpoints,
           // not to a viewer zooming in, so a tightly-matched size would deliver a
           // small file that just stretches (and visibly pixelates) under zoom.
-          <Image src={image} alt={name} fill sizes="320px" quality={90} className="object-cover" />
+          <Image
+            src={image}
+            alt={name}
+            fill
+            sizes="320px"
+            quality={90}
+            className="object-cover"
+            unoptimized
+          />
         ) : (
           <div className="w-full h-full flex items-center justify-center text-gold/70 font-display text-2xl">
             {initial}
