@@ -1,6 +1,8 @@
 # Final QA Report — Cinematic Upgrade Pass
 
-Branch: `upgrade/cinematic-birthday-v2` (not merged to `main`). 6 commits, all small and scoped to one change each.
+Branch: `upgrade/cinematic-birthday-v2` (not merged to `main`). 8 commits, all small and scoped to one change each.
+
+All 12 chapters, every canvas primitive, every UI component, all `src/lib/` files, both auth routes and the login page, and `layout.tsx`/`globals.css` were read end-to-end this pass (not just sampled) — closing the gap the first audit flagged as unread.
 
 ## Issues Found
 
@@ -11,6 +13,8 @@ Branch: `upgrade/cinematic-birthday-v2` (not merged to `main`). 6 commits, all s
 5. A WebGL failure (unsupported browser, lost context) had no fallback — since all chapter content, including text, renders inside the R3F scene tree, this meant a blank page with nothing reachable.
 6. Login had no password-visibility toggle.
 7. One source image (`gujari.jpg`, 195×616px) is lower resolution than ideal for its use.
+8. The Family chapter's DOM copy told visitors to click a face "in the family tree" — but the actual clickable constellation is that chapter itself; the separate Family Tree chapter is a static, non-interactive photo grid. Misleading instruction, found on the full read-through.
+9. Login inputs used `outline-none` with only a border-color change as the focus indicator — no visible focus ring for keyboard navigation.
 
 ## Changes Made
 
@@ -19,7 +23,8 @@ Branch: `upgrade/cinematic-birthday-v2` (not merged to `main`). 6 commits, all s
 - **Skippable, non-repeating intro**: a Skip control appears 2s into the sequence; completion is recorded in `sessionStorage` so a reload within the same visit skips straight to the experience instead of replaying the ~14s sequence.
 - **Photo lightbox**: clicking/tapping a floating photo (3D) or its new DOM thumbnail (Memories chapter cards) opens a full-size view with a caption, closeable via the backdrop, a close button, or Escape.
 - **WebGL fallback**: `Experience3D` is now wrapped in an error boundary that shows a calm, on-brand message instead of a blank page if the Canvas fails to render.
-- **Login**: added a show/hide toggle to both password fields.
+- **Login**: added a show/hide toggle to both password fields, and a visible `focus-visible` ring on the inputs (previously only a border-color change).
+- **Copy fix**: corrected the Family chapter's misleading "click a face in the family tree" text.
 - **Tooling**: added `npm run check-content`, a script that diffs `site.config.json` against the Phase-0 backup and flags any removed key, shrunk array, or string that went from real content to empty/placeholder.
 
 ## Content Preservation
@@ -28,7 +33,7 @@ Branch: `upgrade/cinematic-birthday-v2` (not merged to `main`). 6 commits, all s
 
 ## Mobile
 
-Verified in code: the new nav is `md:hidden`, uses 44px+ touch targets, and doesn't rely on hover. Adaptive particle scaling applies automatically via the existing `useIsMobile`/`useReducedMotion` hooks. **Not verified visually** — see Tests below.
+Verified in code: the new nav is `md:hidden`, uses 44px+ touch targets, and doesn't rely on hover. Adaptive particle scaling applies automatically via the existing `useIsMobile`/`useReducedMotion` hooks. Every `hover:` usage in the codebase (14, across 9 files) was checked individually on the full read-through — all are decorative progressive-enhancement (color/glow transitions on already-visible, already-tappable elements) or apply only to the desktop-only `ChapterNav` (which has a fully separate mobile equivalent); none gate content behind a hover-only interaction a touch user can't reach. **Not verified visually on a real device** — see Tests below.
 
 ## Images
 
