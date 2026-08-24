@@ -37,8 +37,9 @@ yarn-error.log*
 # vercel
 .vercel
 
+# local-only project notes and uploaded prompts
+_local_notes/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-
-.vercel
