@@ -48,7 +48,12 @@ function PhotoTexture({ image, width, height }: { image: string; width: number; 
   }, [texture, gl]);
 
   return (
-    <mesh position={[0, 0, 0.02]}>
+    // RoundedBox's front face sits at local z=+0.02 (half of its 0.04 depth) —
+    // this must clear that by a real margin, not sit exactly on it. At the
+    // same z, both surfaces are visible at once and the renderer flickers
+    // between them per-pixel (z-fighting), which reads as a fine banded/
+    // moiré pattern across the whole photo.
+    <mesh position={[0, 0, 0.05]}>
       <planeGeometry args={[width - 0.14, height - 0.14]} />
       <meshBasicMaterial map={texture} toneMapped={false} />
     </mesh>
@@ -58,7 +63,7 @@ function PhotoTexture({ image, width, height }: { image: string; width: number; 
 function PlaceholderFace({ label, width, height }: { label: string; width: number; height: number }) {
   const initial = label.trim().charAt(0).toUpperCase() || '?';
   return (
-    <group position={[0, 0, 0.02]}>
+    <group position={[0, 0, 0.05]}>
       <mesh>
         <planeGeometry args={[width - 0.14, height - 0.14]} />
         <meshBasicMaterial color="#15161c" toneMapped={false} />

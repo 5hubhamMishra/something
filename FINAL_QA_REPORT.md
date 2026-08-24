@@ -30,6 +30,7 @@ All 12 chapters, every canvas primitive, every UI component, all `src/lib/` file
 - **Login**: added a show/hide toggle to both password fields, and a visible `focus-visible` ring on the inputs (previously only a border-color change).
 - **Auth hardening**: sanitized the login return path to same-site paths only, and cleared reset OTPs if the reset email cannot be delivered.
 - **WebGL photo resilience**: added a local error boundary around floating photos and set WebGL photo textures to sRGB color space.
+- **WebGL photo stability**: moved floating photo/placeholder planes slightly forward from the frame face to avoid z-fighting flicker.
 - **Copy fix**: corrected the Family chapter's misleading "click a face in the family tree" text.
 - **Tooling**: added `npm run check-content`, a script that diffs `site.config.json` against the Phase-0 backup and flags any removed key, shrunk array, or string that went from real content to empty/placeholder.
 - **Image tooling**: added `npm run generate-webgl-images`, which regenerates the WebGL photo variants and the `webgl-image.ts` path map from the current `public/images/` folder. `sharp` is declared as a direct dev dependency for that script instead of relying on Next's transitive install.
