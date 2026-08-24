@@ -27,7 +27,7 @@ export default function LoginPage() {
 function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const from = searchParams.get('from') || '/';
+  const from = getSafeReturnPath(searchParams.get('from'));
 
   const [mode, setMode] = useState<Mode>('login');
   const [username, setUsername] = useState('');
@@ -278,4 +278,16 @@ function Messages({ error, notice }: { error: string | null; notice: string | nu
       {error || notice}
     </p>
   );
+}
+
+function getSafeReturnPath(value: string | null): string {
+  if (!value) return '/';
+
+  try {
+    const url = new URL(value, 'https://local.universe');
+    if (url.origin !== 'https://local.universe') return '/';
+    return `${url.pathname}${url.search}${url.hash}` || '/';
+  } catch {
+    return '/';
+  }
 }

@@ -15,6 +15,10 @@ All 12 chapters, every canvas primitive, every UI component, all `src/lib/` file
 7. One source image (`gujari.jpg`, 195×616px) is lower resolution than ideal for its use.
 8. The Family chapter's DOM copy told visitors to click a face "in the family tree" — but the actual clickable constellation is that chapter itself; the separate Family Tree chapter is a static, non-interactive photo grid. Misleading instruction, found on the full read-through.
 9. Login inputs used `outline-none` with only a border-color change as the focus indicator — no visible focus ring for keyboard navigation.
+10. The login page trusted a manually supplied `from` query value after sign-in; the proxy-generated value is safe, but a typed URL could point somewhere outside the site.
+11. Floating 3D timeline/memory photos did not have their own failed-image boundary, so a single missing or failed photo texture could still bubble up to the canvas-level fallback.
+12. WebGL photo textures did not explicitly set sRGB color space, risking flatter or shifted photo color in Three.js.
+13. A reset OTP was written before sending email and stayed active if the email provider failed.
 
 ## Changes Made
 
@@ -24,6 +28,8 @@ All 12 chapters, every canvas primitive, every UI component, all `src/lib/` file
 - **Photo lightbox**: clicking/tapping a floating photo (3D) or its new DOM thumbnail (Memories chapter cards) opens a full-size view with a caption, closeable via the backdrop, a close button, or Escape.
 - **WebGL fallback**: `Experience3D` is now wrapped in an error boundary that shows a calm, on-brand message instead of a blank page if the Canvas fails to render.
 - **Login**: added a show/hide toggle to both password fields, and a visible `focus-visible` ring on the inputs (previously only a border-color change).
+- **Auth hardening**: sanitized the login return path to same-site paths only, and cleared reset OTPs if the reset email cannot be delivered.
+- **WebGL photo resilience**: added a local error boundary around floating photos and set WebGL photo textures to sRGB color space.
 - **Copy fix**: corrected the Family chapter's misleading "click a face in the family tree" text.
 - **Tooling**: added `npm run check-content`, a script that diffs `site.config.json` against the Phase-0 backup and flags any removed key, shrunk array, or string that went from real content to empty/placeholder.
 
@@ -55,9 +61,9 @@ Two meaningful changes: the particle/Sparkles fix (previously only `CorridorDust
 
 WebGL photo planes (floating photos, family-constellation portraits) loaded the original full-size `public/images/` file directly via `useTexture`, which bypasses Next/Image's optimizer entirely — every device downloaded the same source regardless of screen size. Heaviest case: `rituraj.jpg`, 3000×4000 / 605KB, loaded in full on a phone.
 
-Fixed: pre-generated `sm` (max 900px long edge) / `lg` (max 1400px) variants for all 25 photos under `public/images/webgl/`, with `src/lib/webgl-image.ts` mapping config paths to the right variant (falls back to the original path for anything not in its known list, so it degrades safely rather than breaking if a new photo is added later without updating that list). `FloatingPhoto` and `ConstellationGraph` now request the size-appropriate variant based on `useIsMobile`. DOM images (the `next/image` usages, the lightbox) are untouched — they already go through Next's own optimizer, and the lightbox in particular should keep showing full quality since the visitor explicitly asked to see it larger.
+Fixed: pre-generated `sm` (max 900px long edge) / `lg` (max 1400px) variants for all 25 photos under `public/images/webgl/`, with `src/lib/webgl-image.ts` mapping config paths to the right variant (falls back to the original path for anything not in its known list, so it degrades safely rather than breaking if a new photo is added later without updating that list). `FloatingPhoto` and `ConstellationGraph` now request the size-appropriate variant based on `useIsMobile`, and those WebGL textures are explicitly marked as sRGB for correct photo color. DOM images (the `next/image` usages, the lightbox) are untouched — they already go through Next's own optimizer, and the lightbox in particular should keep showing full quality since the visitor explicitly asked to see it larger.
 
-Independently re-verified: all 50 generated files are within their size cap and none are upscaled past their source (confirmed by direct pixel inspection, not just trusting the report) — `gujari.jpg`'s variants stay 195×616, so the low-resolution limitation is preserved rather than papered over. `npm run build`, `npm run lint`, and `npm run check-content` all pass with these changes included.
+Independently re-verified: all 50 generated files are within their size cap and none are upscaled past their source (confirmed by direct pixel inspection, not just trusting the report) — `gujari.jpg`'s variants stay 195×616, so the low-resolution limitation is preserved rather than papered over. `npm run build`, `npm run lint`, and `npm run check-content` all pass with these changes included, plus the login redirect hardening, floating-photo fallback, sRGB texture setup, and OTP cleanup.
 
 One gap worth flagging: there's no committed script to regenerate these variants — if a new photo is added to `public/images/` later, it needs the same treatment repeated by hand (and added to the list in `webgl-image.ts`) or it silently falls back to full-size loading for that one photo.
 

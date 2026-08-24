@@ -1,6 +1,6 @@
 import { randomInt } from 'node:crypto';
 import { NextResponse, type NextRequest } from 'next/server';
-import { setOtp, checkRateLimit } from '@/lib/credentials-store';
+import { setOtp, clearOtp, checkRateLimit } from '@/lib/credentials-store';
 import { sendOtpEmail } from '@/lib/email';
 import { getClientIp } from '@/lib/request-ip';
 import { isRedisConfigured } from '@/lib/env';
@@ -22,6 +22,7 @@ export async function POST(req: NextRequest) {
   try {
     await sendOtpEmail(code);
   } catch {
+    await clearOtp();
     return NextResponse.json({ error: 'Could not send the reset email. Try again shortly.' }, { status: 502 });
   }
 

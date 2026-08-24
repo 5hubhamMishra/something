@@ -3,7 +3,7 @@
 import { Component, Suspense, useEffect, useRef, useState, type ReactNode } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import { Billboard, Line, Text, useTexture } from '@react-three/drei';
-import { MathUtils, type Mesh } from 'three';
+import { MathUtils, SRGBColorSpace, type Mesh } from 'three';
 import { webglImagePath } from '@/lib/webgl-image';
 import { useIsMobile } from '@/hooks/useMediaFlags';
 
@@ -48,6 +48,7 @@ function PortraitDisc({ image, radius }: { image: string; radius: number }) {
 
   useEffect(() => {
     texture.anisotropy = gl.capabilities.getMaxAnisotropy();
+    texture.colorSpace = SRGBColorSpace;
     texture.needsUpdate = true;
   }, [texture, gl]);
 

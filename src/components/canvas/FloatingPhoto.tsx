@@ -1,9 +1,9 @@
 'use client';
 
-import { Suspense, useEffect, useRef, useState } from 'react';
+import { Component, Suspense, useEffect, useRef, useState, type ReactNode } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import { useTexture, RoundedBox, Text } from '@react-three/drei';
-import type { Group } from 'three';
+import { SRGBColorSpace, type Group } from 'three';
 import { useUniverseStore } from '@/lib/store';
 import { webglImagePath } from '@/lib/webgl-image';
 import { useIsMobile } from '@/hooks/useMediaFlags';
@@ -19,6 +19,19 @@ interface FloatingPhotoProps {
   float?: number;
 }
 
+class PhotoErrorBoundary extends Component<
+  { fallback: ReactNode; children: ReactNode },
+  { failed: boolean }
+> {
+  state = { failed: false };
+  static getDerivedStateFromError() {
+    return { failed: true };
+  }
+  render() {
+    return this.state.failed ? this.props.fallback : this.props.children;
+  }
+}
+
 function PhotoTexture({ image, width, height }: { image: string; width: number; height: number }) {
   const isMobile = useIsMobile();
   const texture = useTexture(webglImagePath(image, isMobile ? 'sm' : 'lg'));
@@ -30,6 +43,7 @@ function PhotoTexture({ image, width, height }: { image: string; width: number; 
     // this is the "blurry photos" look. Max out anisotropy for crisp detail
     // at oblique viewing angles.
     texture.anisotropy = gl.capabilities.getMaxAnisotropy();
+    texture.colorSpace = SRGBColorSpace;
     texture.needsUpdate = true;
   }, [texture, gl]);
 
@@ -110,9 +124,11 @@ export default function FloatingPhoto({
         <meshStandardMaterial color="#f4f1ea" roughness={0.6} metalness={0.1} />
       </RoundedBox>
       {image ? (
-        <Suspense fallback={<PlaceholderFace label={label} width={width} height={height} />}>
-          <PhotoTexture image={image} width={width} height={height} />
-        </Suspense>
+        <PhotoErrorBoundary fallback={<PlaceholderFace label={label} width={width} height={height} />}>
+          <Suspense fallback={<PlaceholderFace label={label} width={width} height={height} />}>
+            <PhotoTexture image={image} width={width} height={height} />
+          </Suspense>
+        </PhotoErrorBoundary>
       ) : (
         <PlaceholderFace label={label} width={width} height={height} />
       )}
