@@ -41,7 +41,7 @@ Full inventory in `PHOTO_QUALITY_REPORT.md`. One file (`gujari.jpg`) is lower-re
 
 ## Performance
 
-The particle/Sparkles fix is the meaningful change here — previously only `CorridorDust` and `Bloom` were mobile-aware; now every chapter's ambient particles are too. No other performance work was done (no texture disposal changes, no adaptive WebGL texture resolution) — those remain open, see below.
+Two meaningful changes: the particle/Sparkles fix (previously only `CorridorDust` and `Bloom` were mobile-aware; now every chapter's ambient particles are too), and adaptive-resolution WebGL photo textures (see below — every device previously loaded the same full-size source image for 3D photo planes). Texture disposal was not changed; the project still relies on drei's texture caching, and this wasn't profiled.
 
 ## Tests
 
@@ -51,33 +51,20 @@ The particle/Sparkles fix is the meaningful change here — previously only `Cor
 - Dev server smoke test: `/login` returns 200 and compiles without server errors; `/` correctly redirects (307) to `/login` when unauthenticated (`proxy.ts` behavior unchanged).
 - **Not tested**: the authenticated 3D experience in an actual browser. No browser-automation tooling was available in this session, and testing it would require either real site credentials (not available, and the production password was never touched or guessed) or a temporary password change — which was deliberately avoided since `.env.local` here holds production Redis credentials and changing the live password without being asked is exactly the kind of action this project's own rules say not to take. So: chapter navigation, the lightbox open/close, intro skip behavior, particle density on an actual phone, and cross-browser rendering are all **unverified in a live browser** — everything above was confirmed by build/lint/type-check and direct code review only.
 
+## Adaptive WebGL Texture Resolution
+
+WebGL photo planes (floating photos, family-constellation portraits) loaded the original full-size `public/images/` file directly via `useTexture`, which bypasses Next/Image's optimizer entirely — every device downloaded the same source regardless of screen size. Heaviest case: `rituraj.jpg`, 3000×4000 / 605KB, loaded in full on a phone.
+
+Fixed: pre-generated `sm` (max 900px long edge) / `lg` (max 1400px) variants for all 25 photos under `public/images/webgl/`, with `src/lib/webgl-image.ts` mapping config paths to the right variant (falls back to the original path for anything not in its known list, so it degrades safely rather than breaking if a new photo is added later without updating that list). `FloatingPhoto` and `ConstellationGraph` now request the size-appropriate variant based on `useIsMobile`. DOM images (the `next/image` usages, the lightbox) are untouched — they already go through Next's own optimizer, and the lightbox in particular should keep showing full quality since the visitor explicitly asked to see it larger.
+
+Independently re-verified: all 50 generated files are within their size cap and none are upscaled past their source (confirmed by direct pixel inspection, not just trusting the report) — `gujari.jpg`'s variants stay 195×616, so the low-resolution limitation is preserved rather than papered over. `npm run build`, `npm run lint`, and `npm run check-content` all pass with these changes included.
+
+One gap worth flagging: there's no committed script to regenerate these variants — if a new photo is added to `public/images/` later, it needs the same treatment repeated by hand (and added to the list in `webgl-image.ts`) or it silently falls back to full-size loading for that one photo.
+
 ## Remaining Issues
 
-- **Needs a real browser pass** — the item above. Recommend either sharing a way to reach the authenticated view, or doing a manual pass on a phone and a laptop against the `upgrade/cinematic-birthday-v2` branch before merging.
+- **Needs a real browser pass.** Chapter navigation, the lightbox, intro skip, and particle density were verified by code review and build/lint/type-check only — not by seeing them render. One route-level authenticated check was done safely (a locally-signed session cookie, using `SESSION_SECRET` already in `.env.local` — no Redis access, no password involved) confirming `/` returns 200 and the new WebGL image variants are served correctly, but no visual/screenshot verification happened, since no browser-automation tool was available in this session. Recommend a manual pass on a phone and a laptop against `upgrade/cinematic-birthday-v2` before merging.
 - `gujari.jpg` (195×616) could use a higher-resolution original if one exists among the raw exports in `family/`.
 - No texture disposal was added for `useTexture` calls; drei's cache mitigates this, but it wasn't profiled.
+- No script to regenerate the WebGL image variants for a photo added after this pass (see above).
 - This branch (`upgrade/cinematic-birthday-v2`) has not been merged to `main` or deployed — that's a decision for you, not made automatically.
-
-## Final Finishing Pass
-
-Additional issue found: WebGL photo planes still loaded the original public image paths directly, so Next/Image optimization did not apply inside Three.js. The heaviest case was `rituraj.jpg` at 3000 × 4000 / 605 KB.
-
-Changes made:
-- Added WebGL-only generated variants in `public/images/webgl/` for every current `public/images/` photo: max 900px long edge for mobile and max 1400px for larger viewports.
-- Added `src/lib/webgl-image.ts` to map existing config image paths to those variants without changing `src/data/site.config.json`.
-- Updated `FloatingPhoto` and `ConstellationGraph` so Three.js textures use the mobile or desktop WebGL variant.
-- Updated the media hooks so the first client render reads `matchMedia`, avoiding a brief desktop-asset choice on mobile.
-
-Verification:
-- `npm run lint` passed.
-- `npm run check-content` passed; `site.config.json` still matches the preservation baseline.
-- `npm run build` passed.
-- `/login` returned 200 locally.
-- `/` redirected to `/login?from=%2F` when unauthenticated.
-- `/` returned 200 with a locally generated signed session cookie, without using Redis or changing the production password.
-- Authenticated requests for `/images/webgl/rituraj-sm.jpg` and `/images/webgl/portrait-casual-lg.jpg` returned JPEGs successfully.
-
-Remaining after this pass:
-- The in-app browser connector failed to start in this session because its runtime metadata was unavailable, so visual screenshots of the authenticated 3D scene were not captured here.
-- `gujari.jpg` is still inherently low resolution; replace it only if a better original becomes available.
-- Texture disposal was not changed; the project still relies on drei texture caching.
