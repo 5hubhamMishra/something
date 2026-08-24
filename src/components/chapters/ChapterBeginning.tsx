@@ -6,20 +6,21 @@ import { siteConfig } from '@/lib/config';
 import { chapterById } from '@/lib/chapters';
 
 const chapter = chapterById('beginning');
+const placeholderImage = '/images/photo-placeholder.svg';
 
 export function BeginningScene() {
   const wz = chapter.worldZ;
   return (
     <group position={[0, 0, wz]}>
       <FloatingPhoto
-        image="/images/portrait-casual.jpg"
+        image={placeholderImage}
         label={siteConfig.father.displayName}
         sublabel={siteConfig.father.birthplace}
         position={[-0.4, 0.3, -2]}
         rotation={[0, 0.25, 0]}
       />
       <FloatingPhoto
-        image="/images/home-porch.jpg"
+        image={placeholderImage}
         label="Home"
         sublabel="Janakpur"
         position={[2.7, -0.5, -4.5]}
@@ -28,7 +29,7 @@ export function BeginningScene() {
         height={1.6}
       />
       <FloatingPhoto
-        image="/images/janaki-mandir.jpg"
+        image={placeholderImage}
         label="Family"
         sublabel="Janakpur"
         position={[1.1, 1.5, -7]}

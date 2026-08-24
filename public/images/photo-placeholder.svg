@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" role="img" aria-labelledby="title desc">
+  <title id="title">Private family photo placeholder</title>
+  <desc id="desc">A warm abstract placeholder used where private family photos were removed.</desc>
+  <defs>
+    <radialGradient id="glow" cx="50%" cy="42%" r="65%">
+      <stop offset="0%" stop-color="#c9a15f" stop-opacity="0.42"/>
+      <stop offset="52%" stop-color="#15161c" stop-opacity="0.85"/>
+      <stop offset="100%" stop-color="#05050a"/>
+    </radialGradient>
+    <linearGradient id="line" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#f4f1ea" stop-opacity="0.62"/>
+      <stop offset="100%" stop-color="#c9a15f" stop-opacity="0.28"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="900" fill="#05050a"/>
+  <rect width="1200" height="900" fill="url(#glow)"/>
+  <g fill="none" stroke="url(#line)" stroke-width="2" opacity="0.44">
+    <path d="M225 620c130-170 260-250 390-240 134 10 255 106 360 288"/>
+    <circle cx="460" cy="322" r="96"/>
+    <path d="M340 705c52-142 138-213 258-213s207 71 261 213"/>
+  </g>
+  <g fill="#f4f1ea" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif">
+    <text x="600" y="744" font-size="44" letter-spacing="8" opacity="0.78">PRIVATE PHOTO</text>
+    <text x="600" y="800" font-size="24" letter-spacing="4" opacity="0.5">REMOVED FROM REPOSITORY</text>
+  </g>
+</svg>

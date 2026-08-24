@@ -27,7 +27,7 @@ export function FamilyScene() {
       <ConstellationGraph
         nodes={nodes}
         centerLabel={siteConfig.father.displayName}
-        centerImage="/images/portrait-casual.jpg"
+        centerImage="/images/photo-placeholder.svg"
         selectedId={selectedId}
         onSelect={(id) => useUniverseStore.getState().setSelectedFamily(id)}
       />

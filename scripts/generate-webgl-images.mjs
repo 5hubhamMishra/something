@@ -26,8 +26,14 @@ const imageNames = readdirSync(imageDir)
   .sort((a, b) => a.localeCompare(b));
 
 if (imageNames.length === 0) {
-  console.error(`No source images found in ${path.relative(root, imageDir)}.`);
-  process.exit(1);
+  await writeFile(
+    helperPath,
+    `export function webglImagePath(image: string, size: 'sm' | 'lg') {\n  void size;\n  return image;\n}\n`,
+    'utf8',
+  );
+  console.log(`No public raster source images found in ${path.relative(root, imageDir)}.`);
+  console.log(`Wrote pass-through helper: ${path.relative(root, helperPath)}`);
+  process.exit(0);
 }
 
 if (existsSync(outputDir)) {

@@ -188,7 +188,7 @@ export function FamilyTreeDom() {
                   <TreeCard
                     name={father.displayName}
                     relation="Him"
-                    image="/images/portrait-casual.jpg"
+                    image="/images/photo-placeholder.svg"
                     emphasize
                   />
                   <span className="text-gold/60 font-display text-xl mt-8 md:mt-10">&amp;</span>

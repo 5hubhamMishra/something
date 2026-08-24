@@ -39,6 +39,15 @@ yarn-error.log*
 
 # local-only project notes and uploaded prompts
 _local_notes/
+_backups/
+
+# private family photo originals and generated photo variants
+family/
+public/images/*.jpg
+public/images/*.jpeg
+public/images/*.png
+public/images/*.webp
+public/images/webgl/
 
 # typescript
 *.tsbuildinfo
