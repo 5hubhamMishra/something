@@ -19,6 +19,7 @@ All 12 chapters, every canvas primitive, every UI component, all `src/lib/` file
 11. Floating 3D timeline/memory photos did not have their own failed-image boundary, so a single missing or failed photo texture could still bubble up to the canvas-level fallback.
 12. WebGL photo textures did not explicitly set sRGB color space, risking flatter or shifted photo color in Three.js.
 13. A reset OTP was written before sending email and stayed active if the email provider failed.
+14. **Found via an actual browser render, not code review**: floating photo cards showed a fine banded/moiré interference pattern across the whole photo — every chapter, every photo, both desktop and mobile viewports. Root cause: `FloatingPhoto`'s photo plane sat at local `z = 0.02`, exactly the same depth as the front face of its `RoundedBox` frame (depth `0.04`, so front face at `z = +0.02`) — genuinely coplanar geometry, not merely close. That's a textbook z-fighting setup.
 
 ## Changes Made
 
@@ -30,7 +31,7 @@ All 12 chapters, every canvas primitive, every UI component, all `src/lib/` file
 - **Login**: added a show/hide toggle to both password fields, and a visible `focus-visible` ring on the inputs (previously only a border-color change).
 - **Auth hardening**: sanitized the login return path to same-site paths only, and cleared reset OTPs if the reset email cannot be delivered.
 - **WebGL photo resilience**: added a local error boundary around floating photos and set WebGL photo textures to sRGB color space.
-- **WebGL photo stability**: moved floating photo/placeholder planes slightly forward from the frame face to avoid z-fighting flicker.
+- **WebGL photo stability**: moved the floating photo/placeholder planes from `z = 0.02` to `z = 0.05` — clear of the `RoundedBox` frame's front face at `z = 0.02` — to eliminate the z-fighting moiré pattern found by actual rendering (see Tests below). Confirmed fixed by re-screenshotting the same chapter before and after.
 - **Copy fix**: corrected the Family chapter's misleading "click a face in the family tree" text.
 - **Tooling**: added `npm run check-content`, a script that diffs `site.config.json` against the Phase-0 backup and flags any removed key, shrunk array, or string that went from real content to empty/placeholder.
 - **Image tooling**: added `npm run generate-webgl-images`, which regenerates the WebGL photo variants and the `webgl-image.ts` path map from the current `public/images/` folder. `sharp` is declared as a direct dev dependency for that script instead of relying on Next's transitive install.
@@ -41,7 +42,7 @@ All 12 chapters, every canvas primitive, every UI component, all `src/lib/` file
 
 ## Mobile
 
-Verified in code: the new nav is `md:hidden`, uses 44px+ touch targets, and doesn't rely on hover. Adaptive particle scaling applies automatically via the existing `useIsMobile`/`useReducedMotion` hooks. Every `hover:` usage in the codebase (14, across 9 files) was checked individually on the full read-through — all are decorative progressive-enhancement (color/glow transitions on already-visible, already-tappable elements) or apply only to the desktop-only `ChapterNav` (which has a fully separate mobile equivalent); none gate content behind a hover-only interaction a touch user can't reach. **Not verified visually on a real device** — see Tests below.
+Verified in code: the new nav is `md:hidden`, uses 44px+ touch targets, and doesn't rely on hover. Adaptive particle scaling applies automatically via the existing `useIsMobile`/`useReducedMotion` hooks. Every `hover:` usage in the codebase (14, across 9 files) was checked individually on the full read-through — all are decorative progressive-enhancement (color/glow transitions on already-visible, already-tappable elements) or apply only to the desktop-only `ChapterNav` (which has a fully separate mobile equivalent); none gate content behind a hover-only interaction a touch user can't reach. Confirmed by screenshot at a 390×844 viewport: the mobile chapter counter genuinely renders, no horizontal overflow. **Not verified on real device hardware** — see Tests below.
 
 ## Images
 
@@ -56,8 +57,17 @@ Two meaningful changes: the particle/Sparkles fix (previously only `CorridorDust
 - `npm run build` — passes (Turbopack, TypeScript, all 7 routes) after every commit.
 - `npm run lint` — passes with zero warnings after every commit.
 - `npm run check-content` — passes after every commit.
+- `npm run generate-webgl-images` — re-run independently; output is byte-identical to what's committed (deterministic).
 - Dev server smoke test: `/login` returns 200 and compiles without server errors; `/` correctly redirects (307) to `/login` when unauthenticated (`proxy.ts` behavior unchanged).
-- **Not tested**: the authenticated 3D experience in an actual browser. No browser-automation tooling was available in this session, and testing it would require either real site credentials (not available, and the production password was never touched or guessed) or a temporary password change — which was deliberately avoided since `.env.local` here holds production Redis credentials and changing the live password without being asked is exactly the kind of action this project's own rules say not to take. So: chapter navigation, the lightbox open/close, intro skip behavior, particle density on an actual phone, and cross-browser rendering are all **unverified in a live browser** — everything above was confirmed by build/lint/type-check and direct code review only.
+
+**A real browser pass did happen, later in this session.** Playwright (Chromium, already present on this machine — no new dependency added to the project) was driven against the actual running dev server, authenticated with a locally-signed session cookie (same technique noted above: HMAC-signed with `SESSION_SECRET` from `.env.local`, verified with no Redis lookup and no password involved — see `src/lib/session.ts`). Confirmed by screenshot, at both a desktop (1440×900) and mobile (390×844) viewport:
+- The Canvas renders, the opening overlay's Enter button works, the Skip control works, zero console errors and zero page errors across the whole run.
+- Desktop `ChapterNav` renders and shows the active chapter.
+- The mobile chapter counter (`MobileChapterNav`) genuinely renders and reads "01 / 11" — confirms it reaches real users, not just that the code compiles.
+- No horizontal overflow at the mobile viewport.
+- This is what caught issue #14 above (the z-fighting moiré) — a bug no amount of code review or build/lint checking could have found, and the fix was re-verified the same way (before/after screenshot, same chapter, same viewport).
+
+**Caveat, stated plainly**: this ran under software WebGL rendering (confirmed via `WEBGL_debug_renderer_info`: "SwiftShader Device (Subzero)"), not a real GPU — this sandboxed environment has no hardware acceleration available. Software rendering is generally a *stricter* test for z-fighting/precision issues, not a looser one, so a fix that resolves it here should if anything be safer on real hardware, not riskier — but the exact pixel-level look on a real phone or laptop GPU still hasn't been seen. Also not done: clicking a floating photo to open the lightbox specifically (WebGL canvas objects need pixel-coordinate clicks in Playwright, not attempted this round), Safari/Firefox rendering, and every other chapter beyond the one screenshotted (Beginning) — the fix is structural (the same `z=0.02` coplanarity existed in every `FloatingPhoto` instance across every chapter that uses it), but only one was directly seen.
 
 ## Adaptive WebGL Texture Resolution
 
@@ -71,7 +81,8 @@ Regeneration is now covered by `npm run generate-webgl-images`; if a new photo i
 
 ## Remaining Issues
 
-- **Needs a real browser pass.** Chapter navigation, the lightbox, intro skip, and particle density were verified by code review and build/lint/type-check only — not by seeing them render. One route-level authenticated check was done safely (a locally-signed session cookie, using `SESSION_SECRET` already in `.env.local` — no Redis access, no password involved) confirming `/` returns 200 and the new WebGL image variants are served correctly, but no visual/screenshot verification happened, since no browser-automation tool was available in this session. Recommend a manual pass on a phone and a laptop against `upgrade/cinematic-birthday-v2` before merging.
+- **Partial real-hardware/cross-browser gap.** The one browser pass that happened was headless Chromium under software rendering (SwiftShader), one chapter (Beginning), two viewport sizes. Real GPU rendering, Safari/Firefox, and the other 11 chapters have not been directly seen — only exercised by code review and the general smoke checks (no console errors across the run, canvas present, nav present). Recommend a manual pass on an actual phone and laptop against `upgrade/cinematic-birthday-v2` before merging, particularly scrolling through every chapter once.
+- The lightbox's open/close interaction specifically wasn't clicked through in the automated pass (WebGL canvas objects need pixel-coordinate clicks, not attempted) — the DOM-thumbnail path into the same lightbox (Memories chapter cards) is ordinary DOM and lower-risk, but the 3D-photo click path is unverified end-to-end.
 - `gujari.jpg` (195×616) could use a higher-resolution original if one exists among the raw exports in `family/`.
 - No texture disposal was added for `useTexture` calls; drei's cache mitigates this, but it wasn't profiled.
 - This branch (`upgrade/cinematic-birthday-v2`) has not been merged to `main` or deployed — that's a decision for you, not made automatically.
