@@ -4,6 +4,8 @@ import { Component, Suspense, useEffect, useRef, useState, type ReactNode } from
 import { useFrame, useThree } from '@react-three/fiber';
 import { Billboard, Line, Text, useTexture } from '@react-three/drei';
 import { MathUtils, type Mesh } from 'three';
+import { webglImagePath } from '@/lib/webgl-image';
+import { useIsMobile } from '@/hooks/useMediaFlags';
 
 // Portraits referenced before their image file is actually uploaded (e.g. a
 // family member added ahead of the photo landing in public/images) would
@@ -40,7 +42,8 @@ interface ConstellationGraphProps {
 }
 
 function PortraitDisc({ image, radius }: { image: string; radius: number }) {
-  const texture = useTexture(image);
+  const isMobile = useIsMobile();
+  const texture = useTexture(webglImagePath(image, isMobile ? 'sm' : 'lg'));
   const gl = useThree((s) => s.gl);
 
   useEffect(() => {

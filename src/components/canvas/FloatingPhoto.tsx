@@ -5,6 +5,8 @@ import { useFrame, useThree } from '@react-three/fiber';
 import { useTexture, RoundedBox, Text } from '@react-three/drei';
 import type { Group } from 'three';
 import { useUniverseStore } from '@/lib/store';
+import { webglImagePath } from '@/lib/webgl-image';
+import { useIsMobile } from '@/hooks/useMediaFlags';
 
 interface FloatingPhotoProps {
   image?: string;
@@ -18,7 +20,8 @@ interface FloatingPhotoProps {
 }
 
 function PhotoTexture({ image, width, height }: { image: string; width: number; height: number }) {
-  const texture = useTexture(image);
+  const isMobile = useIsMobile();
+  const texture = useTexture(webglImagePath(image, isMobile ? 'sm' : 'lg'));
   const gl = useThree((s) => s.gl);
 
   useEffect(() => {

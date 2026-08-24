@@ -55,6 +55,29 @@ The particle/Sparkles fix is the meaningful change here — previously only `Cor
 
 - **Needs a real browser pass** — the item above. Recommend either sharing a way to reach the authenticated view, or doing a manual pass on a phone and a laptop against the `upgrade/cinematic-birthday-v2` branch before merging.
 - `gujari.jpg` (195×616) could use a higher-resolution original if one exists among the raw exports in `family/`.
-- No adaptive-resolution strategy for WebGL photo textures — every device currently loads the same full-size source image (heaviest: `rituraj.jpg`, 3000×4000 / 605KB). Not fixed in this pass; flagged as a real gap in the original audit but treated as a separate, larger change (would need a resizing strategy for texture sources) rather than a small safe fix.
 - No texture disposal was added for `useTexture` calls; drei's cache mitigates this, but it wasn't profiled.
 - This branch (`upgrade/cinematic-birthday-v2`) has not been merged to `main` or deployed — that's a decision for you, not made automatically.
+
+## Final Finishing Pass
+
+Additional issue found: WebGL photo planes still loaded the original public image paths directly, so Next/Image optimization did not apply inside Three.js. The heaviest case was `rituraj.jpg` at 3000 × 4000 / 605 KB.
+
+Changes made:
+- Added WebGL-only generated variants in `public/images/webgl/` for every current `public/images/` photo: max 900px long edge for mobile and max 1400px for larger viewports.
+- Added `src/lib/webgl-image.ts` to map existing config image paths to those variants without changing `src/data/site.config.json`.
+- Updated `FloatingPhoto` and `ConstellationGraph` so Three.js textures use the mobile or desktop WebGL variant.
+- Updated the media hooks so the first client render reads `matchMedia`, avoiding a brief desktop-asset choice on mobile.
+
+Verification:
+- `npm run lint` passed.
+- `npm run check-content` passed; `site.config.json` still matches the preservation baseline.
+- `npm run build` passed.
+- `/login` returned 200 locally.
+- `/` redirected to `/login?from=%2F` when unauthenticated.
+- `/` returned 200 with a locally generated signed session cookie, without using Redis or changing the production password.
+- Authenticated requests for `/images/webgl/rituraj-sm.jpg` and `/images/webgl/portrait-casual-lg.jpg` returned JPEGs successfully.
+
+Remaining after this pass:
+- The in-app browser connector failed to start in this session because its runtime metadata was unavailable, so visual screenshots of the authenticated 3D scene were not captured here.
+- `gujari.jpg` is still inherently low resolution; replace it only if a better original becomes available.
+- Texture disposal was not changed; the project still relies on drei texture caching.
