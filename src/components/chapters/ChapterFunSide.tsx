@@ -7,6 +7,7 @@ import type { Mesh } from 'three';
 import Reveal from '@/components/ui/Reveal';
 import { hasContent, siteConfig } from '@/lib/config';
 import { chapterById } from '@/lib/chapters';
+import { useIsMobile, useReducedMotion } from '@/hooks/useMediaFlags';
 
 const chapter = chapterById('funside');
 
@@ -44,11 +45,15 @@ function DriftingOrb({
 
 export function FunSideScene() {
   const wz = chapter.worldZ;
+  const isMobile = useIsMobile();
+  const reducedMotion = useReducedMotion();
+  const sparkleCount = isMobile || reducedMotion ? 50 : 120;
+
   return (
     <group position={[0, 0, wz]}>
-      <Sparkles count={120} scale={5} size={3} speed={0.4} color="#c9a15f" />
-      <DriftingOrb position={[-1.8, 0.6, -1.5]} color="#c9a15f" speed={0.5} />
-      <DriftingOrb position={[2, -0.4, -3]} color="#e8e2d0" radius={0.1} speed={0.8} />
+      <Sparkles count={sparkleCount} scale={5} size={3} speed={reducedMotion ? 0 : 0.4} color="#c9a15f" />
+      <DriftingOrb position={[-1.8, 0.6, -1.5]} color="#c9a15f" speed={reducedMotion ? 0 : 0.5} />
+      <DriftingOrb position={[2, -0.4, -3]} color="#e8e2d0" radius={0.1} speed={reducedMotion ? 0 : 0.8} />
     </group>
   );
 }

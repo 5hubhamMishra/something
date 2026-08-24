@@ -2,10 +2,13 @@
 
 import { useEffect } from 'react';
 import dynamic from 'next/dynamic';
+import CanvasErrorBoundary from '@/components/canvas/CanvasErrorBoundary';
 import OpeningOverlay from '@/components/ui/OpeningOverlay';
 import ChapterNav from '@/components/ui/ChapterNav';
+import MobileChapterNav from '@/components/ui/MobileChapterNav';
 import AudioPlayer from '@/components/ui/AudioPlayer';
 import SignOutButton from '@/components/ui/SignOutButton';
+import PhotoLightbox from '@/components/ui/PhotoLightbox';
 import { SecretHotspot, SecretModal } from '@/components/ui/SecretLayer';
 import { hydrateDiscovered } from '@/lib/store';
 
@@ -20,13 +23,17 @@ export default function Experience() {
 
   return (
     <div className="relative w-screen h-screen overflow-hidden bg-void">
-      <Experience3D />
+      <CanvasErrorBoundary>
+        <Experience3D />
+      </CanvasErrorBoundary>
       <OpeningOverlay />
       <ChapterNav />
+      <MobileChapterNav />
       <AudioPlayer />
       <SignOutButton />
       <SecretHotspot />
       <SecretModal />
+      <PhotoLightbox />
     </div>
   );
 }

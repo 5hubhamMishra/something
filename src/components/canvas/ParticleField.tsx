@@ -4,6 +4,7 @@ import { useMemo, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Points, PointMaterial } from '@react-three/drei';
 import type { Points as ThreePoints } from 'three';
+import { useIsMobile, useReducedMotion } from '@/hooks/useMediaFlags';
 
 interface ParticleFieldProps {
   count?: number;
@@ -19,15 +20,26 @@ interface ParticleFieldProps {
  * Particles are kept out of a clear "content bubble" near the group origin (where
  * floating photos and other foreground objects are placed) so the dust reads as
  * atmosphere behind the content rather than clutter drawn on top of it.
+ *
+ * Reads device/motion capability itself (rather than requiring every call site
+ * to thread isMobile/reducedMotion through) so every chapter that uses this
+ * component gets adaptive density for free: mobile gets ~45% of the requested
+ * count (matching CorridorDust's existing ratio), and reduced-motion visitors
+ * get that same lighter count with the drift animation stopped outright.
  */
 export default function ParticleField({
-  count = 350,
+  count: requestedCount = 350,
   radius = 10,
   color = '#c9a15f',
   size = 0.012,
   speed = 0.02,
   opacity = 0.3,
 }: ParticleFieldProps) {
+  const isMobile = useIsMobile();
+  const reducedMotion = useReducedMotion();
+  const count = isMobile || reducedMotion ? Math.round(requestedCount * 0.45) : requestedCount;
+  const effectiveSpeed = reducedMotion ? 0 : speed;
+
   const ref = useRef<ThreePoints>(null);
   const minRadius = radius * 0.65;
 
@@ -45,9 +57,9 @@ export default function ParticleField({
   }, [count, radius, minRadius]);
 
   useFrame((_, delta) => {
-    if (!ref.current) return;
-    ref.current.rotation.y += delta * speed;
-    ref.current.rotation.x += delta * speed * 0.2;
+    if (!ref.current || effectiveSpeed === 0) return;
+    ref.current.rotation.y += delta * effectiveSpeed;
+    ref.current.rotation.x += delta * effectiveSpeed * 0.2;
   });
 
   return (
