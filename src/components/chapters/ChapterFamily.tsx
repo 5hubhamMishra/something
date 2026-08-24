@@ -74,7 +74,7 @@ export function FamilyDom() {
             </div>
           ) : (
             <p className="text-silver/60 italic">
-              Click a face in the family tree to learn more about them.
+              Click a star above to learn more about them.
             </p>
           )}
         </div>

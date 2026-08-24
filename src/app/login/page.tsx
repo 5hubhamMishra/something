@@ -217,7 +217,7 @@ function LoginForm() {
 }
 
 const inputClass =
-  'w-full rounded-md border border-graphite bg-void px-3 py-2 text-sm text-warm-white outline-none transition-colors focus:border-gold';
+  'w-full rounded-md border border-graphite bg-void px-3 py-2 text-sm text-warm-white outline-none transition-colors focus:border-gold focus-visible:ring-2 focus-visible:ring-gold/60 focus-visible:ring-offset-2 focus-visible:ring-offset-void';
 
 const buttonClass =
   'w-full rounded-md bg-gold py-2 text-sm font-medium tracking-wide text-void transition-opacity hover:opacity-90 disabled:opacity-50 cursor-pointer';
